@@ -38,6 +38,10 @@ Currently the project is in a planning phase.  Current to-dos:
 * Determine a license.
 * Implement processes.
 
+# Code cleanliness:
+
+I aim to Smash out a PoC first, we can clean it up, optimise and refactor later on, when something works.  Don't let perfect be the enemy of the good, etc.
+
 # How to help?
 
 If you have experience with NodeJS, evolutionary algorithms, multivariate testing and are interested in participating in a fun experiment, get in touch here or [via twitter](https://twitter.com/alexofparker "Alex's Twitter").
