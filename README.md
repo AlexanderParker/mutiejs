@@ -5,6 +5,8 @@ mutie.js - Evolve your DOM!
 
 mutie.js aims to create an automated multivariate testing platform capable of mutating DOM elements automatically.
 
+It's a crazy idea, and while this is not the first time anyone's thought of doing this, I haven't come across any implementations.  So let's give it a shot!
+
 # But why?
 
 If you're in web marketing there's endless debate over which font sizes, colors, weights, borders, paddings and margins are most effective on calls to action.
