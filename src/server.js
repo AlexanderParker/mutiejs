@@ -22,9 +22,15 @@ var server = function() {
 		}
 		this.prototype.getPrimaryMutation = function() {
 			// Grab the primary mutation for the element;
+			return this.mutations.find(function isPrimary(element, index, array) {
+				return element.isPrimary;
+			});
 		}
 		this.prototype.getAlternateMutations = function() {
 			// Grab the alternate mutations for the element;
+			return this.mutations.filter(function isPrimary(element, index, array) {
+				return !element.isPrimary;
+			});
 		}
 		this.prototype.getRandomMutation = function() {
 			// Retrieve a random mutation for the element;
@@ -62,9 +68,6 @@ var server = function() {
 			else {
 				this.score += points;
 			}
-			return this.score;
-		}
-		this.prototype.getScore = function() {
 			return this.score;
 		}
 	}
