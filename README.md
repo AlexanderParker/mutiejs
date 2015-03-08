@@ -31,12 +31,35 @@ Here is a more in-depth take on the processes:
 
 ![Detailed process diagram](/doc/mutie.js.process.jpg?raw=true "Detailed process diagram")
 
+Obviously this is all amorphous and subject to improvements and tweaks as time goes on.
+
 # Project status
 
-Currently the project is in a planning phase.  Current to-dos:
+Currently the project is in a planning / early development phase.  
+
+Current achievements:
+
+* Basic nodejs server can respond with canned mutations for the border property.
+* Primitive mutation bindings in the DOM are supported.
+
+Current to-do's:
 
 * Determine a license.
-* Implement processes.
+* More mappings.
+* Make the property mappings modular.
+* Extract the server settings from the server class.
+* Actually save the mutations into tests against elements - right now they're just completely random.
+* Work out sensible mutation metrics.  For example a color's range of mutation is between 0 - 255, so a change of 10% is 25 units (rather than multiplying each channel by the random amount).
+* Implement goal tracking and multivariate testing algorithm.
+* Think of more to-do's!
+
+# How to test now:
+
+1. Get nodejs if you haven't already.
+2. Clone the repository.
+3. Start the nodejs server in /src/server/server.js
+4. Browse to the demo in /demo/demo.html
+5. Refresh the page to see the random changes.  Note, this is just a quick test of communicating random mutations from the server to the client, in the future these will evolve over time and be based off tangible goal improvements.
 
 # Code cleanliness:
 
