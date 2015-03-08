@@ -1,14 +1,25 @@
 // Define server operations:
 var server = function() {
 
+	// A basic struct for our goals:
+	function Goal(data) {
+		this.data = data;
+		this.prototype.process = function() {
+			// Process a goal:
+		}
+	}
+
 	// A place to store goal notifications.
 	var goalProcessingQueue = {
 		items: [],
 		shift: function() {
 			return this.items.shift();
-		}
+		},
 		push: function(data) {
-			this.items.push(data);
+			return this.items.push(data);
+		},
+		length: function() {
+			return items.length;
 		}
 	}
 
@@ -28,10 +39,18 @@ var server = function() {
 		_log('Stopping mutiejs server.')
 	}
 
-	// 
-	function goalSuccess(data) {
-		goalProcessingQueue.push(data);
+	// Push goal success to the queue:
+	function goalPushSuccess(data) {
+		// Insert data into a Goal instance in the queue.
+		goalProcessingQueue.push(new Goal(data));
 		return true;			
+	}
+
+	// Goal success processing callback:
+	function processGoalSuccess() {
+		if (goalProcessingQueue.length > 0) {
+			goalProcessingQueue.shift.process();
+		}
 	}
 
 	/**
