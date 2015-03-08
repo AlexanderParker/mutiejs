@@ -4,18 +4,20 @@
 		<script type="text/javascript" src="../src/client/mutie.js"></script>
 		<style type="text/css">
 			/* Some demo styles */
-			.mutable,
-			.original {
+			.base-style {
 				display: block;
 				background: #00FF00;
-				color: #FFF;
+				color: #000;
 				border-radius: 5px;
 				border: 1px solid #fff;
+				margin: 10px;
+				padding: 5px;
 			}
 		</style>
 	</head>
 	<body>
-		<div class="mutable" data-mutable="true">This is the mutable element.</div>
-		<div class="original" data-mutable="true">This is the original state.</div>
+		<div class="base-style">This is the original state.</div>
+		<div class="base-style mutie-enabled" data-mutie-id="my-mutable-element" data-mutie-properties="border,background,color">This is the mutable element.</div>
+		<div class="base-style mutie-enabled" data-mutie-id="my-mutable-element-2" data-mutie-properties="font-weight,border,color,background,padding">This is another mutable element with the same starting point as the first.</div>
 	</body>
 </html>
