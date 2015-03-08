@@ -70,6 +70,8 @@ var server = function() {
 		else {
 			this.mutations = [];
 		}
+		// Set the timestamp of the experiment start:
+		this.experimentStartTimestamp = config.experimentStartTimestamp;
 		// Retrieve mutations associated with the element:
 		this.prototype.getMutations = function() {
 			return this.mutations;
@@ -111,11 +113,17 @@ var server = function() {
 
 	// Mutation object:
 	function Mutation(config) {		
+		// Parameters determine the extent of mutation:
 		this.parameters = config.parameters;
+		// Is the mutation enabled?
 		this.isEnabled = config.isEnabled;
+		// Is the mutation primary?
 		this.isPrimary = config.isPrimary;
-		this.elementIdentifier = config.elementIdentifier;
+		// Associate the mutation with its element:
+		this.element = config.element;
+		// Set the mutation score:
 		this.score = config.score;
+		// Set the created timestamp:
 		this.createdTimestamp = config.createdTimestamp;
 		// Increment the mutation's score.
 		this.prototype.incrementScore = function(points) {
@@ -183,7 +191,8 @@ var server = function() {
 	function _pushGoalSuccess(data) {
 		// Insert data into a Goal instance in the queue.
 		goalProcessingQueue.push(new GoalResult({
-			goal: new Goal(data.goal)
+			goal: new Goal(data.goal),
+			elements: data.elements
 		}));
 		return true;			
 	}
