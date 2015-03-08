@@ -1,3 +1,7 @@
+# Forewarning:
+
+This project is under initial development.  There is some JS code in the src folder but it doesn't do anything useful yet.  However if you're intrested in contributing or watching this project, please read on!
+
 # mutie.js
 mutie.js - Evolve your DOM!
 
