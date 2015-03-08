@@ -19,6 +19,8 @@ Developers are commonly asked to make a border thicker, change its color, add or
 
 By randomising these changes and tracking their effectiveness when it comes to goal conversion, we may be able to automatically evolve the DOM over time towards a state that converts most effectively.
 
+At the very least, it's a fun exercise!  A website that redesigns itself?  What a novel concept!
+
 # How would it work?
 
 The client would bootstrap a script from a server, which then processes all DOM elements that are flagged as mutatable.  Random variations would be picked for these elements, and their impact on goals would be tracked accordingly.
