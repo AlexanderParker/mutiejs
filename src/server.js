@@ -1,11 +1,34 @@
 // Define server operations:
 var server = function() {
 
-	// A basic struct for our goals:
-	function Goal(data) {
-		this.data = data;
+	// Goal object:
+	function Goal(config) {
+		this.data = config.data;
 		this.prototype.process = function() {
-			// Process a goal:
+			// Update all associated mutation scores
+
+		}
+	}
+
+	// Mutation object:
+	function Mutation(config) {
+		this.parameters = config.parameters;
+		this.isEnabled = config.isEnabled;
+		this.isPrimary = config.isPrimary;
+		this.elementIdentifier = config.elementIdentifier;
+		this.score = config.score;
+		// Increment the mutation's score.
+		this.prototype.incrementScore = function(points) {
+			// Minimum points to add is 1.
+			if (!points) {
+				this.score +=  1;
+			} else {
+				this.score += points;
+			}
+			return this.score;
+		}
+		this.prototype.getScore = function() {
+			return this.score;
 		}
 	}
 
@@ -15,8 +38,8 @@ var server = function() {
 		shift: function() {
 			return this.items.shift();
 		},
-		push: function(data) {
-			return this.items.push(data);
+		push: function(goal) {
+			return this.items.push(goal);
 		},
 		length: function() {
 			return items.length;
@@ -42,7 +65,9 @@ var server = function() {
 	// Push goal success to the queue:
 	function goalPushSuccess(data) {
 		// Insert data into a Goal instance in the queue.
-		goalProcessingQueue.push(new Goal(data));
+		goalProcessingQueue.push(new Goal({
+			data: data
+		}));
 		return true;			
 	}
 
@@ -57,8 +82,14 @@ var server = function() {
 	 * Private Methods:
 	 */
 
+	// Generic log message:
 	function _log(message) {
-		console.log(new Date().toGMTString(), message)
+		console.log(new Date().toGMTString() + '::' + message);
+	}
+
+	// Disable the provided mutations:
+	function _disableMutations(mutations) {
+
 	}
 
 	/**
