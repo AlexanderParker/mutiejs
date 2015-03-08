@@ -1,4 +1,9 @@
-var http = require('http');
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
+var jsonParser = bodyParser.json();
+
+app.use(bodyParser.json({ type: 'application/*+json' }));
 
 // Define server operations:
 function server() {
@@ -180,9 +185,31 @@ server.prototype.start = function() {
 	this._loadSettings();
 	// Initialise the mutiejs endpoints:
 	this._log('Starting mutiejs server.');
-	http.createServer(function(req, res) {
-		console.log(req.url);
-	}).listen(this.settings.serverPort);
+	// Set up mutations endpoint.
+	app.use(function(req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Credentials', true); 
+		res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+		if (res.type == 'OPTIONS') {
+			res.sendStatus(200);		
+		}
+		else {
+			next();
+		}
+	});	
+	app.post('/mutations', jsonParser, function(req, res) {
+		if (!req.body) return res.sendStatus(400);
+		// Get session mutations for selected elements:
+		res.send(req.body.map(function(value, index, array) {
+			return {
+				element: value.element,
+				// Todo: lock these down to a session and test iteration.  For now it's always random.
+				mutations: this._generateMutation(value.properties)
+			};
+		}.bind(this)));
+	}.bind(this));
+	app.listen(this.settings.serverPort);
 	this._log('Started mutiejs server on port ' + this.settings.serverPort);
 };
 
@@ -257,12 +284,65 @@ server.prototype._loadSettings = function() {
 		// The age (in hours) at which to clean up stalemates:
 		stalemateResolutionAge: 100,
 		// The factor to mutate each new generation by:
-		mutationFactor: 0.1,
+		mutationFactor: 0.4,
 		// The number of mutation variations to generate each generation:
 		mutationVariations: 5,
 		// The factor of difference required for any mutation to be declared the winner:
 		victoryFactor: 0.05
 	};
 };
+
+// Given a property list, generate a mutant:
+server.prototype._generateMutation = function(parameters) {
+	// Randomly affect only certain parameters - at least 1.
+	var actualParameters = [];
+	while (actualParameters.length === 0) {
+		actualParameters = parameters.filter(function() {
+			return Math.random() < 0.5;
+		});
+	}
+	// Generate variations on the parameters:
+	var mutant = actualParameters.map(function(value, index, array) {
+		console.log(value);
+		switch (value) {
+			case "border":
+			return this.mutateBorder();
+			break;
+			default:
+			return { property: value, parameters: null };
+			break;			
+		}
+	}.bind(this));
+	console.log(mutant);
+	return mutant;
+}
+
+// Generate a border mutation:
+
+server.prototype.mutateBorder = function() {
+	return {
+		property: "border",
+		parameters: {
+			width: this.getRandom(),
+			color: this.mutateColor(),
+			radius: this.getRandom()
+		},		
+	};
+}
+
+server.prototype.mutateColor = function() {
+	return {
+		r: this.getRandom(),
+		g: this.getRandom(),
+		b: this.getRandom(),
+	};
+}
+
+// Get a random vale
+server.prototype.getRandom = function() {
+	min = -this.settings.mutationFactor;
+	max = this.settings.mutationFactor;
+	return 1 + Math.random() * (max - min) + min;
+}
 
 mutieServer = new server();

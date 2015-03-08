@@ -14,13 +14,13 @@
 				padding: 5px;
 			}
 		</style>
-		<script type="text/javascript">
-			mutiejs.bootstrap('http://localhost:8398');
-		</script>
 	</head>
 	<body>
 		<div class="base-style">This is the original state.</div>
 		<div class="base-style mutie-enabled" data-mutie-id="my-mutable-element" data-mutie-properties="border,background,color">This is the mutable element.</div>
 		<div class="base-style mutie-enabled" data-mutie-id="my-mutable-element-2" data-mutie-properties="font-weight,border,color,background,padding">This is another mutable element with the same starting point as the first.</div>
+		<script type="text/javascript">
+			mutiejs.bootstrap(document.location.origin + ':8398');
+		</script>
 	</body>
 </html>
