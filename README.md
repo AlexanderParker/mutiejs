@@ -40,6 +40,20 @@ If you have experience with NodeJS, evolutionary algorithms, multivariate testin
 
 I aim to get a PoC up and running ASAP, it will be fun to see how effective this really can be.
 
+# Ideas:
+
+## What can be mutable?
+
+* Basic element attributes - size, shape, color, font, etc.  Probably the easiest to implement.
+* CTA text - markov chains or synonym substitution?  May have some hilarious results.
+* Layout - would require intimate knowledge of grid systems etc in use.  At a guess to say this would be "tricky" is probably an understatement.
+
+## How to determine winning element mutations?
+
+Good question.  At its most basic, just award a point to every mutation active in a user's session if a goal is completed.  Or we could track which mutations a user has been exposed to during a particular visit and only award points to those.  We could explicitly define a goal funnel, and only mutations in that funnel would count.
+
+Right now, it's all very blue-sky thinking.
+
 # Project Contributors
 
 * Alex Parker - Project initiator and maintainer.
