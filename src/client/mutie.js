@@ -31,13 +31,26 @@ mutiejs.sendMutieRequest = function(mutieRequest) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', this.serverUrl + '/mutations', true);
   xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-  // send the collected data as JSON
-  xhr.send(JSON.stringify(mutieRequest));
+  xhr.addEventListener("error", this.processMutieError);
+  xhr.addEventListener("abort", this.processMutieError);
+  xhr.addEventListener("onload", this.processMutieResponse);
+  xhr.send(JSON.stringify(mutieRequest));  
   xhr.onloadend = this.processMutieResponse;
 }
 
-mutiejs.processMutieResponse(response, status) {
-	console.log(response, status);
+mutiejs.processMutieResponse = function(evt) {
+	if (this.status != 200) {
+		throw {
+			message: "Unable to connect to mutie server.", 
+			event: evt, 
+			request: this
+		};
+	}
+	
+}
+
+mutiejs.processMutieError = function(evt) {
+	console.log(evt, this);
 }
 
 // Function to start the fun:

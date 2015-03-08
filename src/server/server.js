@@ -1,3 +1,25 @@
+var http = require('http');
+
+// These will be externally configurable one day.
+var settings = {
+	// The port the mutiejs server will run on:
+	serverPort: 8398,
+	// The interval to process the goal success queue on (milliseconds):
+	goalSuccessProcessInterval: 10,
+	// The interval to clean up old sessions on (milliseconds):
+	sessionCleanupInterval: 100000,
+	// The interval to clean up stalemates on (milliseconds):
+	stalemateCleanupInterval: 100000,
+	// The age (in hours) at which to clean up stalemates:
+	stalemateResolutionAge: 100,
+	// The factor to mutate each new generation by:
+	mutationFactor: 0.1,
+	// The number of mutations to generate each generation:
+	mutationVariations: 5,
+	// The factor of difference required for any mutation to be declared the winner:
+	victoryFactor: 0.05
+};
+
 // Define server operations:
 var server = function() {
 
@@ -173,13 +195,17 @@ var server = function() {
 	// Start the server:
 	function start() {
 		// Initialise the mutiejs endpoints:
-		_log('Starting mutiejs server.')
+		_log('Starting mutiejs server.');
+		http.createServer(function(req, res) {
+			console.log(req.url);
+		}).listen(settings.serverPort);
 	}
 
 	// Stop the server:
 	function stop() {
 		// Gracefully exit:
-		_log('Stopping mutiejs server.')
+		_log('Stopping mutiejs server.');
+		process.exit;
 	}
 
 
@@ -240,7 +266,7 @@ var server = function() {
 	return {
 		start: start
 	}
-}
+};
 
 mutieServer = new server();
 mutieServer.start();
