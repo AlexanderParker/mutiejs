@@ -17,12 +17,14 @@ var server = function() {
 		this.isPrimary = config.isPrimary;
 		this.elementIdentifier = config.elementIdentifier;
 		this.score = config.score;
+		this.createdTimestamp = config.createdTimestamp;
 		// Increment the mutation's score.
 		this.prototype.incrementScore = function(points) {
 			// Minimum points to add is 1.
 			if (!points) {
 				this.score +=  1;
-			} else {
+			}
+			else {
 				this.score += points;
 			}
 			return this.score;
@@ -33,15 +35,29 @@ var server = function() {
 	}
 
 	// A place to store goal notifications.
-	var goalProcessingQueue = {
-		items: [],
-		shift: function() {
+	var goalProcessingQueue = function(items) {
+		if (items.constructor === Array) {
+			this.items = items;
+		}
+		else {
+			this.items = [];
+		}		
+		this.prototype.shift = function() {
 			return this.items.shift();
-		},
-		push: function(goal) {
-			return this.items.push(goal);
-		},
-		length: function() {
+		}
+		this.prototype.push = function(goal) {
+			// You can only push valid Goals to the queue:
+			if (goal.constructor === Goal) {
+				return this.items.push(goal);
+			}
+			else {				
+				throw {
+					message: "Attempted to push non-Goal object to goalProcessingQueue",
+					data: goal
+				}
+			}
+		}
+		this.prototype.length = function() {
 			return items.length;
 		}
 	}
@@ -62,8 +78,13 @@ var server = function() {
 		_log('Stopping mutiejs server.')
 	}
 
+
+	/**
+	 * Private Methods:
+	 */
+
 	// Push goal success to the queue:
-	function goalPushSuccess(data) {
+	function _pushGoalSuccess(data) {
 		// Insert data into a Goal instance in the queue.
 		goalProcessingQueue.push(new Goal({
 			data: data
@@ -72,15 +93,21 @@ var server = function() {
 	}
 
 	// Goal success processing callback:
-	function processGoalSuccess() {
+	function _processGoalQueue() {
 		if (goalProcessingQueue.length > 0) {
 			goalProcessingQueue.shift.process();
 		}
 	}
 
-	/**
-	 * Private Methods:
-	 */
+	// Clean up old sessions:
+	function _cleanupSessions() {
+
+	}
+
+	// Resolve mutation stalemates:
+	function _resolveStalemates() {
+
+	}
 
 	// Generic log message:
 	function _log(message) {
@@ -102,4 +129,4 @@ var server = function() {
 }
 
 mutieServer = new server();
-
+mutieServer.start();
