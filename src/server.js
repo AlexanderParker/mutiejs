@@ -10,8 +10,43 @@ var server = function() {
 		}
 	}
 
+	function Element(config) {
+		if (config.mutations.constructor === Array) {
+			this.mutations = config.mutations;
+		}
+		else {
+			this.mutations = [];
+		}	
+		this.prototype.getMutations = function() {
+			return this.mutations;
+		}
+		this.prototype.getPrimaryMutation = function() {
+			// Grab the primary mutation for the element;
+		}
+		this.prototype.getAlternateMutations = function() {
+			// Grab the alternate mutations for the element;
+		}
+		this.prototype.getRandomMutation = function() {
+			// Retrieve a random mutation for the element;
+			return this.mutations[
+				Math.floor(Math.random()*this.mutations.length)
+			];
+		}
+		this.prototype.addMutation = function(mutation) {
+			if (mutation.constructor === Mutation) {
+				this.mutations.push(mutation);
+			}
+			else {
+				throw _exception(
+					"Attempted to push non-Mutation object to Element mutations",
+					mutation
+				);
+			}
+		}
+	}
+
 	// Mutation object:
-	function Mutation(config) {
+	function Mutation(config) {		
 		this.parameters = config.parameters;
 		this.isEnabled = config.isEnabled;
 		this.isPrimary = config.isPrimary;
@@ -51,10 +86,10 @@ var server = function() {
 				return this.items.push(goal);
 			}
 			else {				
-				throw {
-					message: "Attempted to push non-Goal object to goalProcessingQueue",
-					data: goal
-				}
+				throw _exception(
+					"Attempted to push non-Goal object to goalProcessingQueue",
+					goal
+				);
 			}
 		}
 		this.prototype.length = function() {
@@ -117,6 +152,14 @@ var server = function() {
 	// Disable the provided mutations:
 	function _disableMutations(mutations) {
 
+	}
+
+	// Generic exception format:
+	function _exception(message, data) {
+		return {
+			message: message,
+			data: data
+		}
 	}
 
 	/**
